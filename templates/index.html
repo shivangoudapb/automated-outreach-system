@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Automated Outreach System</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 350px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .company {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .lead {
+            background: #fafafa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        details {
+            margin-top: 10px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .email-preview {
+            background: white;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .send-btn {
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Automated Outreach System</h1>
+
+<form method="POST">
+
+    <input
+        type="text"
+        name="domain"
+        placeholder="microsoft.com"
+        required
+    >
+
+    <button type="submit">
+        Generate Leads
+    </button>
+
+</form>
+
+{% for company in results %}
+
+<div class="company">
+
+    <h2>{{ company.company_name }}</h2>
+
+    <p>
+        <strong>Domain:</strong>
+        {{ company.company_domain }}
+    </p>
+
+    {% for lead in company.leads %}
+
+    <div class="lead">
+
+        <p>
+            <strong>Name:</strong>
+            {{ lead.name }}
+        </p>
+
+        <p>
+            <strong>Title:</strong>
+            {{ lead.title }}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            {{ lead.email }}
+        </p>
+
+        <p>
+            <strong>Subject:</strong>
+            {{ lead.subject }}
+        </p>
+
+        <details>
+
+            <summary>
+                View Generated Email
+            </summary>
+
+            <div class="email-preview">
+                {{ lead.body | safe }}
+            </div>
+
+        </details>
+
+        <form
+            method="POST"
+            action="/send-test-email"
+        >
+
+            <input
+                type="hidden"
+                name="subject"
+                value="{{ lead.subject }}"
+            >
+
+            <input
+                type="hidden"
+                name="body"
+                value="{{ lead.body }}"
+            >
+
+            <button
+                type="submit"
+                class="send-btn"
+            >
+                Send Test Email
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endfor %}
+
+</body>
+</html>
