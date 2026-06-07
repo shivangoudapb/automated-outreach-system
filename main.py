@@ -1,8 +1,10 @@
-from dotenv import load_dotenv
-import os
+from services.prospeo import ProspeoClient
 
-load_dotenv()
 
-print("Ocean:", bool(os.getenv("OCEAN_API_KEY")))
-print("Prospeo:", bool(os.getenv("PROSPEO_API_KEY")))
-print("Brevo:", bool(os.getenv("BREVO_API_KEY")))
+client = ProspeoClient()
+
+result = client.search_company_by_domain(
+    "microsoft.com"
+)
+
+print(result)
