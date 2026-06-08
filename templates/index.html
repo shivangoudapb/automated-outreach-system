@@ -7,70 +7,138 @@
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f7f7f7;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 40px;
+            color: #333;
         }
 
-        h1 {
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
             margin-bottom: 30px;
+            text-align: center;
         }
 
-        form {
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 350px;
+        input[type="text"] {
+            width: 60%;
             padding: 12px;
             font-size: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
         }
 
-        button {
+        .primary-btn {
             padding: 12px 20px;
-            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2563eb;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .primary-btn:hover {
+            background-color: #1d4ed8;
         }
 
         .company {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 25px;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .company h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .company-domain {
+            color: #6b7280;
+            margin-bottom: 20px;
         }
 
         .lead {
-            background: #fafafa;
-            border-left: 4px solid #007bff;
-            padding: 15px;
+            background: #f9fafb;
+            border-left: 5px solid #2563eb;
+            border-radius: 10px;
+            padding: 18px;
             margin-top: 15px;
         }
 
+        .lead p {
+            margin: 8px 0;
+        }
+
         details {
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         summary {
             cursor: pointer;
             font-weight: bold;
+            color: #2563eb;
         }
 
         .email-preview {
+            margin-top: 12px;
             background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
             padding: 15px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
         }
 
         .send-btn {
             margin-top: 15px;
-            background-color: #28a745;
-            color: white;
+            padding: 10px 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            background-color: #16a34a;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .send-btn:hover {
+            background-color: #15803d;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
         }
 
     </style>
@@ -79,103 +147,145 @@
 
 <body>
 
-<h1>Automated Outreach System</h1>
+<div class="container">
 
-<form method="POST">
+    <div class="header">
 
-    <input
-        type="text"
-        name="domain"
-        placeholder="microsoft.com"
-        required
-    >
-
-    <button type="submit">
-        Generate Leads
-    </button>
-
-</form>
-
-{% for company in results %}
-
-<div class="company">
-
-    <h2>{{ company.company_name }}</h2>
-
-    <p>
-        <strong>Domain:</strong>
-        {{ company.company_domain }}
-    </p>
-
-    {% for lead in company.leads %}
-
-    <div class="lead">
+        <h1>🚀 Automated Outreach System</h1>
 
         <p>
-            <strong>Name:</strong>
-            {{ lead.name }}
+            Find lookalike companies, discover decision makers,
+            generate personalized emails, and send outreach campaigns.
         </p>
 
-        <p>
-            <strong>Title:</strong>
-            {{ lead.title }}
-        </p>
+    </div>
 
-        <p>
-            <strong>Email:</strong>
-            {{ lead.email }}
-        </p>
+    <div class="search-box">
 
-        <p>
-            <strong>Subject:</strong>
-            {{ lead.subject }}
-        </p>
-
-        <details>
-
-            <summary>
-                View Generated Email
-            </summary>
-
-            <div class="email-preview">
-                {{ lead.body | safe }}
-            </div>
-
-        </details>
-
-        <form
-            method="POST"
-            action="/send-test-email"
-        >
+        <form method="POST">
 
             <input
-                type="hidden"
-                name="subject"
-                value="{{ lead.subject }}"
-            >
-
-            <input
-                type="hidden"
-                name="body"
-                value="{{ lead.body }}"
+                type="text"
+                name="domain"
+                placeholder="Enter company domain (e.g. microsoft.com)"
+                required
             >
 
             <button
                 type="submit"
-                class="send-btn"
+                class="primary-btn"
             >
-                Send Test Email
+                Generate Leads
             </button>
 
         </form>
 
     </div>
 
+    {% for company in results %}
+
+    <div class="company">
+
+        <h2>🏢 {{ company.company_name }}</h2>
+
+        <div class="company-domain">
+            🌐 {{ company.company_domain }}
+        </div>
+
+        {% if company.error %}
+
+            <p style="color:red;">
+                {{ company.error }}
+            </p>
+
+        {% endif %}
+
+        {% if company.leads|length == 0 %}
+
+            <div class="empty-message">
+                ⚠ No leads found for this company.
+            </div>
+
+        {% endif %}
+
+        {% for lead in company.leads %}
+
+        <div class="lead">
+
+            <p>
+                <strong>👤 Name:</strong>
+                {{ lead.name }}
+            </p>
+
+            <p>
+                <strong>💼 Title:</strong>
+                {{ lead.title }}
+            </p>
+
+            <p>
+                <strong>📧 Email:</strong>
+                {{ lead.email }}
+            </p>
+
+            {% if lead.linkedin %}
+            <p>
+                <strong>🔗 LinkedIn:</strong>
+                <a href="{{ lead.linkedin }}" target="_blank">
+                    View Profile
+                </a>
+            </p>
+            {% endif %}
+
+            <p>
+                <strong>📨 Subject:</strong>
+                {{ lead.subject }}
+            </p>
+
+            <details>
+
+                <summary>View Generated Email</summary>
+
+                <div class="email-preview">
+                    {{ lead.body | safe }}
+                </div>
+
+            </details>
+
+            <form
+                method="POST"
+                action="/send-test-email"
+            >
+
+                <input
+                    type="hidden"
+                    name="subject"
+                    value="{{ lead.subject }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="body"
+                    value="{{ lead.body }}"
+                >
+
+                <button
+                    type="submit"
+                    class="send-btn"
+                >
+                    Send Test Email
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
     {% endfor %}
 
 </div>
-
-{% endfor %}
 
 </body>
 </html>

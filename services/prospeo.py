@@ -46,15 +46,7 @@ class ProspeoClient:
             json=payload
         )
 
-        result = response.json()
-
-        print("\n" + "=" * 80)
-        print("PROSPEO SEARCH RESPONSE")
-        print("=" * 80)
-        print(result)
-        print("=" * 80)
-
-        return result
+        return response.json()
 
     def enrich_person(self, person_id):
 
@@ -77,8 +69,6 @@ class ProspeoClient:
 
     def get_leads(self, company_domain, limit=5):
 
-        print(f"\nSearching Prospeo for: {company_domain}")
-
         search_result = self.search_decision_makers(
             company_domain
         )
@@ -89,8 +79,6 @@ class ProspeoClient:
             "results",
             []
         )
-
-        print(f"People returned: {len(people)}")
 
         for person_data in people[:limit]:
 
@@ -103,14 +91,11 @@ class ProspeoClient:
                 "person_id"
             )
 
-            print(f"Enriching person: {person_id}")
-
             enrich_result = self.enrich_person(
                 person_id
             )
 
             if enrich_result.get("error"):
-                print("Enrichment failed")
                 continue
 
             enriched_person = enrich_result.get(
@@ -138,11 +123,6 @@ class ProspeoClient:
                 )
             }
 
-            print("Lead found:")
-            print(lead)
-
             leads.append(lead)
-
-        print(f"Final leads count: {len(leads)}")
 
         return leads
