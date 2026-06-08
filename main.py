@@ -61,13 +61,25 @@ def main():
     print("Subject:")
     print(email_content["subject"])
 
-    print("\nSending email to yourself...\n")
+    # DEVELOPMENT MODE
+    # Sends email to yourself
+
+    recipient_email = TEST_EMAIL
+    recipient_name = "Shivangouda"
+
+    # DEMO MODE
+    # Uncomment these 2 lines and comment the 2 above
+
+    # recipient_email = lead["email"]
+    # recipient_name = lead["name"]
+
+    print(f"\nSending email to: {recipient_email}\n")
 
     result = brevo.send_email(
         sender_email="pes1202203647@pesu.pes.edu",
         sender_name="Shivangouda Bhavihal",
-        recipient_email=TEST_EMAIL,
-        recipient_name="Shivangouda",
+        recipient_email=recipient_email,
+        recipient_name=recipient_name,
         subject=email_content["subject"],
         html_content=email_content["html"]
     )

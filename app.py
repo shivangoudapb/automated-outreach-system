@@ -56,8 +56,6 @@ def index():
                     limit=2
                 )
 
-                print("LEADS =", leads)
-
                 for lead in leads:
 
                     email_content = generate_email(
@@ -99,11 +97,29 @@ def send_test_email():
     subject = request.form.get("subject")
     body = request.form.get("body")
 
+    recipient_email = request.form.get(
+        "recipient_email"
+    )
+
+    recipient_name = request.form.get(
+        "recipient_name"
+    )
+
+    # DEVELOPMENT MODE
+    send_to_email = TEST_EMAIL
+    send_to_name = "Shivangouda"
+
+    # DEMO MODE
+    # Uncomment these 2 lines and comment the 2 above
+
+    # send_to_email = recipient_email
+    # send_to_name = recipient_name
+
     result = brevo.send_email(
         sender_email="pes1202203647@pesu.pes.edu",
         sender_name="Shivangouda Bhavihal",
-        recipient_email=TEST_EMAIL,
-        recipient_name="Shivangouda",
+        recipient_email=send_to_email,
+        recipient_name=send_to_name,
         subject=subject,
         html_content=body
     )
